@@ -1,0 +1,37 @@
+services:
+  lb:
+    build: .
+    ports:
+      - "22:22"
+      - "8080:8080"
+      - "70:70"
+    expose:
+      - "22"
+      - "8080"
+      - "70"
+    links:
+      - "sftpgo1"
+      - "sftpgo2"
+  sftpgo1:
+    image: drakkan/sftpgo:latest
+    expose:
+      - "2022"
+      - "8080"
+    environment:
+      SFTPGO_COMMON__PROXY_PROTOCOL: 1
+    volumes:
+      - sftpdata:/srv/sftpgo
+      - sftphome:/var/lib/sftpgo
+  sftpgo2:
+    image: drakkan/sftpgo:latest
+    expose:
+      - "2022"
+      - "8080"
+    environment:
+      SFTPGO_COMMON__PROXY_PROTOCOL: 1
+    volumes:
+      - sftpdata:/srv/sftpgo
+      - sftphome:/var/lib/sftpgo
+volumes:
+  sftpdata:
+  sftphome:
