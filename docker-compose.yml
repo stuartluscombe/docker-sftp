@@ -17,21 +17,53 @@ services:
     expose:
       - "2022"
       - "8080"
+    links:
+      - "db"
     environment:
       SFTPGO_COMMON__PROXY_PROTOCOL: 1
+      SFTPGO_DATA_PROVIDER__DRIVER: postgresql
+      SFTPGO_DATA_PROVIDER__NAME: sftpgo
+      SFTPGO_DATA_PROVIDER__HOST: db
+      SFTPGO_DATA_PROVIDER__PORT: 5432
+      SFTPGO_DATA_PROVIDER__USERNAME: sftpgo
+      SFTPGO_DATA_PROVIDER__PASSWORD: testing
     volumes:
       - sftpdata:/srv/sftpgo
       - sftphome:/var/lib/sftpgo
+    depends_on:
+      - "db"
   sftpgo2:
     image: drakkan/sftpgo:latest
     expose:
       - "2022"
-      - "8080"
+      - "8081"
+    links:
+      - "db"
     environment:
       SFTPGO_COMMON__PROXY_PROTOCOL: 1
+      SFTPGO_DATA_PROVIDER__DRIVER: postgresql
+      SFTPGO_DATA_PROVIDER__NAME: sftpgo
+      SFTPGO_DATA_PROVIDER__HOST: db
+      SFTPGO_DATA_PROVIDER__PORT: 5432
+      SFTPGO_DATA_PROVIDER__USERNAME: sftpgo
+      SFTPGO_DATA_PROVIDER__PASSWORD: testing
+      SFTPGO_HTTPD__BINDINGS__PORT: 8081
     volumes:
       - sftpdata:/srv/sftpgo
       - sftphome:/var/lib/sftpgo
+    depends_on:
+      - "db"
+  db:
+    image: postgres
+    expose:
+      - "5432"
+    environment:
+      POSTGRES_DB: sftpgo
+      POSTGRES_USER: sftpgo
+      POSTGRES_PASSWORD: testing
+      #    volumes:
+      #      - sftpdbdata:/var/lib/postgresql/data
 volumes:
   sftpdata:
   sftphome:
+          #  sftpdbdata:
