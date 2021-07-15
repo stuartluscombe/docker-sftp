@@ -27,6 +27,7 @@ services:
       SFTPGO_DATA_PROVIDER__PORT: 5432
       SFTPGO_DATA_PROVIDER__USERNAME: sftpgo
       SFTPGO_DATA_PROVIDER__PASSWORD: testing
+      SFTPGO_HTTPD__BINDINGS__0__ENABLE_WEB_CLIENT: "false"
     volumes:
       - sftpdata:/srv/sftpgo
       - sftphome:/var/lib/sftpgo
@@ -36,7 +37,7 @@ services:
     image: drakkan/sftpgo:latest
     expose:
       - "2022"
-      - "8081"
+      - "8080"
     links:
       - "db"
     environment:
@@ -47,7 +48,7 @@ services:
       SFTPGO_DATA_PROVIDER__PORT: 5432
       SFTPGO_DATA_PROVIDER__USERNAME: sftpgo
       SFTPGO_DATA_PROVIDER__PASSWORD: testing
-      SFTPGO_HTTPD__BINDINGS__PORT: 8081
+      SFTPGO_HTTPD__BINDINGS__0__ENABLE_WEB_CLIENT: "false"
     volumes:
       - sftpdata:/srv/sftpgo
       - sftphome:/var/lib/sftpgo
@@ -61,9 +62,9 @@ services:
       POSTGRES_DB: sftpgo
       POSTGRES_USER: sftpgo
       POSTGRES_PASSWORD: testing
-      #    volumes:
-      #      - sftpdbdata:/var/lib/postgresql/data
+    volumes:
+      - sftpdbdata:/var/lib/postgresql/data
 volumes:
   sftpdata:
   sftphome:
-          #  sftpdbdata:
+  sftpdbdata:
