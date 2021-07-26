@@ -1,4 +1,14 @@
 services:
+  db:
+    image: postgres
+    expose:
+      - "5432"
+    environment:
+      POSTGRES_DB: sftpgo
+      POSTGRES_USER: sftpgo
+      POSTGRES_PASSWORD: testing
+    volumes:
+      - sftpdbdata:/var/lib/postgresql/data
   lb:
     build: .
     ports:
